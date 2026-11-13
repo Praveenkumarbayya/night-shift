@@ -1,5 +1,7 @@
 # Night Shift 🌙
 
+**▶ Play it: https://praveenkumarbayya.github.io/night-shift/**
+
 A browser game where you are the only SOC analyst on the night shift at a hospital.
 
 Security alerts arrive as cards. Swipe right to **contain** a real attack, swipe left to clear a **false alarm**. Miss too many attacks and ransomware spreads across the network; isolate too many healthy systems and you are taken off the desk.
