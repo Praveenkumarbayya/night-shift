@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Night Shift — SOC analyst game</title>
+<meta name="description" content="You are the only SOC analyst on the night shift at a hospital. Triage real-world security alerts, stop the ransomware, collect all 40 MITRE ATT&CK techniques.">
+<meta name="theme-color" content="#05070f">
+<meta property="og:title" content="Night Shift — can you survive a night in the SOC?">
+<meta property="og:description" content="Swipe through real-world security alerts. Contain the attacks, clear the false alarms, stop the ransomware.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="rain"></canvas>
+
+<div id="app">
+
+  <!-- TITLE -->
+  <section id="s-title" class="screen on">
+    <div class="title-block">
+      <span class="moon">🌙</span>
+      <h1>NIGHT<br>SHIFT</h1>
+      <p class="sub">HALCYON HEALTH · SOC · 03:12 AM</p>
+      <p class="pitch">You're the only analyst on shift.<br>Something is already inside the network.</p>
+    </div>
+    <div class="menu">
+      <button id="btn-start" class="btn primary">START NIGHT 1</button>
+      <div id="night-chips" class="chips"></div>
+      <button id="btn-codex" class="btn">ATT&amp;CK CODEX · <span id="codex-count">0</span>/40</button>
+      <div class="row">
+        <button id="btn-sound" class="btn small">🔊 SOUND ON</button>
+        <button id="btn-reset" class="btn small">RESET SAVE</button>
+      </div>
+    </div>
+    <div class="rank-line">RANK · <b id="rank-name">Intern</b></div>
+    <div class="credit">Built by Praveen Kumar Bayya · alerts mapped to MITRE ATT&amp;CK®</div>
+  </section>
+
+  <!-- BRIEFING -->
+  <section id="s-brief" class="screen">
+    <div class="brief-head">
+      <div class="kicker" id="brief-kicker">NIGHT 1</div>
+      <h2 id="brief-title">First night on the desk</h2>
+    </div>
+    <div class="chat"><div class="who">◆ VESPER</div><div id="brief-typed" class="typed"></div></div>
+    <ul class="rules" id="brief-rules"></ul>
+    <button id="btn-begin" class="btn primary">CLOCK IN →</button>
+  </section>
+
+  <!-- PLAY -->
+  <section id="s-play" class="screen">
+    <div class="hud">
+      <span>🌙 <b id="clock">01:00</b> · <span id="hud-night">NIGHT 1</span></span>
+      <span class="score"><b id="score">0</b><i id="combo"></i></span>
+    </div>
+    <div class="hud hud2">
+      <span class="pips" id="threat">THREAT <i></i><i></i><i></i><i></i><i></i></span>
+      <span id="progress">1 / 6</span>
+      <span class="pips strikes" id="strikes">DISRUPTION <i></i><i></i><i></i></span>
+    </div>
+    <div class="timer"><div id="timer-bar"></div></div>
+
+    <div id="card-wrap">
+      <div id="card">
+        <div class="card-top"><span id="sev" class="sev">● HIGH</span><span id="src" class="eid"></span></div>
+        <h2 id="card-title"></h2>
+        <div id="card-host" class="host"></div>
+        <div id="card-lines" class="tree"></div>
+        <div class="hint" id="card-hint">Tap the line that gives it away for a bonus</div>
+      </div>
+      <div id="stamp"></div>
+    </div>
+
+    <div class="btns">
+      <button id="btn-dismiss" class="act dismiss">← FALSE ALARM</button>
+      <button id="btn-contain" class="act contain">CONTAIN →</button>
+    </div>
+
+    <div id="debrief">
+      <div class="db-head"><span id="db-verdict"></span><span id="db-points"></span></div>
+      <div id="db-truth" class="db-truth"></div>
+      <p id="db-why"></p>
+      <div id="db-clue" class="db-clue"></div>
+      <div id="db-vesper" class="db-vesper"></div>
+      <button id="btn-next" class="btn primary">NEXT ALERT →</button>
+    </div>
+  </section>
+
+  <!-- OUTBREAK -->
+  <section id="s-outbreak" class="screen">
+    <div class="ob-head">
+      <div class="lbl" id="ob-label">⚠ RANSOMWARE SPREADING</div>
+      <div class="ob-sub" id="ob-sub">Tap clean hosts to pull them off the network</div>
+      <div class="shields" id="ob-shields"></div>
+    </div>
+    <svg id="net" viewBox="0 0 360 330"></svg>
+    <div id="ob-result" class="ob-result"></div>
+    <div class="chat ob-chat"><div class="who">◆ VESPER</div><div id="ob-typed" class="typed"></div></div>
+    <button id="btn-ob-next" class="btn primary">CONTINUE →</button>
+  </section>
+
+  <!-- SUMMARY -->
+  <section id="s-summary" class="screen">
+    <div class="sum-head">
+      <div class="kicker" id="sum-kicker">NIGHT 1</div>
+      <h2 id="sum-title">SURVIVED</h2>
+      <div id="sum-grid" class="grid-line"></div>
+      <div id="sum-stats" class="stats"></div>
+    </div>
+    <div id="sum-cards" class="newcards"></div>
+    <div class="chat"><div class="who">◆ VESPER</div><div id="sum-typed" class="typed"></div></div>
+    <div class="menu">
+      <button id="btn-sum-next" class="btn primary">NEXT NIGHT →</button>
+      <div class="row">
+        <button id="btn-share" class="btn small">SHARE RESULT</button>
+        <button id="btn-sum-codex" class="btn small">CODEX</button>
+        <button id="btn-sum-menu" class="btn small">MENU</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAIL -->
+  <section id="s-fail" class="screen">
+    <div class="fail-block">
+      <div class="fail-ic" id="fail-ic">💀</div>
+      <h2 id="fail-title">HALCYON IS DOWN</h2>
+      <p id="fail-text"></p>
+      <div id="fail-grid" class="grid-line"></div>
+    </div>
+    <div class="menu">
+      <button id="btn-retry" class="btn primary">TRY AGAIN</button>
+      <button id="btn-fail-menu" class="btn">MENU</button>
+    </div>
+  </section>
+
+  <!-- CODEX -->
+  <section id="s-codex" class="screen">
+    <div class="codex-head">
+      <button id="btn-codex-back" class="btn small">← BACK</button>
+      <div><b>ATT&amp;CK CODEX</b><span id="codex-sub"></span></div>
+    </div>
+    <div id="codex-grid" class="codex-grid"></div>
+  </section>
+
+  <div id="modal" class="modal"><div class="modal-card" id="modal-card"></div></div>
+  <div id="toast"></div>
+</div>
+
+<div class="vignette"></div>
+<div class="scan"></div>
+
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

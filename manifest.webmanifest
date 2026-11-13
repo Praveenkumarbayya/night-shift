@@ -1,0 +1,11 @@
+{
+  "name": "Night Shift — SOC analyst game",
+  "short_name": "Night Shift",
+  "description": "Triage real-world security alerts on the hospital night shift. Collect all 40 MITRE ATT&CK techniques.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070f",
+  "theme_color": "#05070f",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
